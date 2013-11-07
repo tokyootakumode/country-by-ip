@@ -26,3 +26,36 @@ describe 'Convert IP to country', ->
       cc.should.eql 'CN'
       country = ip.getCountry i
       country.name.en.should.eql 'China'
+
+describe 'Convert country code to country name', ->
+
+  it 'Country name in English', ->
+    codes =
+      'JP': 'Japan'
+      'US': 'United States'
+      'CA': 'Canada'
+      '': null
+      '11': null
+
+    for key, value of codes
+      name = ip.getCountryNameByCode key
+      if (value)
+        name.should.eql value
+      else
+        should.not.exists name
+
+  it 'Country name in Japan', ->
+    codes =
+      'JP': '日本'
+      'US': 'アメリカ'
+      'CA': 'カナダ'
+      '': null
+      '11': null
+
+    for key, value of codes
+      name = ip.getCountryNameByCode key, 'ja'
+      if (value)
+        name.should.eql value
+      else
+        should.not.exists name
+
