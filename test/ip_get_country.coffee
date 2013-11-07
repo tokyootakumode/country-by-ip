@@ -44,7 +44,7 @@ describe 'Convert country code to country name', ->
       else
         should.not.exists name
 
-  it 'Country name in Japan', ->
+  it 'Country name in Japanese', ->
     codes =
       'JP': '日本'
       'US': 'アメリカ'
