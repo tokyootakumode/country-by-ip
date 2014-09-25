@@ -12,7 +12,7 @@ describe 'Convert IP to country', ->
       country.name.en.should.eql 'Japan'
 
   it 'US', ->
-    ips = [ '184.169.144.234' ]
+    ips = [ '184.169.144.234', '104.53.16.215' ]
     ips.forEach (i) ->
       cc = ip.getCountryCode i
       cc.should.eql 'US'

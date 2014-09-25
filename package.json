@@ -2,10 +2,10 @@
   "author": "Masashi Sekine <m_sekine@tokyootakumode.com>",
   "name": "country-by-ip",
   "description": "Get country name or code by IP address.",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "homepage": "http://otakumode.com",
   "repository": {
-    "url": "https://github.com/tokyootakumode/com/"
+    "url": "https://github.com/tokyootakumode/country-by-ip"
   },
   "main": "./lib",
   "scripts": {
@@ -17,7 +17,7 @@
   "devDependencies": {
     "mocha": "1.6.x",
     "should": "",
-    "coffee-script": ""
+    "coffee-script": "~1.6.3"
   },
   "optionalDependencies": {},
   "engines": {
