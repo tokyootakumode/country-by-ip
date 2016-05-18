@@ -2,7 +2,7 @@
   "author": "Masashi Sekine <m_sekine@tokyootakumode.com>",
   "name": "country-by-ip",
   "description": "Get country name or code by IP address.",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "homepage": "http://otakumode.com",
   "repository": {
     "url": "https://github.com/tokyootakumode/country-by-ip"
