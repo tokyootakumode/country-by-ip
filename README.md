@@ -1,5 +1,7 @@
 # Country By IP
 
+[![Build Status](https://travis-ci.org/tokyootakumode/country-by-ip.svg?branch=master)](https://travis-ci.org/tokyootakumode/country-by-ip)
+
 You can retrieve country name (English / Japanese) and country code by IP address.
 
 
