@@ -18,7 +18,6 @@
     "power-assert": "^1.6.1",
     "prettier": "^1.15.3",
     "temp": "^0.9.0",
-    "through2": "^3.0.0",
     "util.promisify": "^1.0.0"
   },
   "scripts": {
