@@ -111,6 +111,7 @@ const buildCountryDic = ({ locationsCsvPath }) => {
       });
   });
 };
+
 const buildIpDic = ({ countryDic, ipCsvPath }) => {
   return new Promise((resolve, reject) => {
     const ranges = [];
@@ -167,7 +168,7 @@ const saveDataAsBinary = ranges => {
       const b = Buffer.alloc(10);
       b.writeUInt32BE(range.network, 0);
       b.writeUInt32BE(range.broadcast, 4);
-      b.write(range.cc, 8, 'ascii');
+      b.write(range.cc, 8, 2, 'ascii');
       output.write(b);
     });
     output.end();
