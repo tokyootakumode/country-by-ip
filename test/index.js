@@ -45,6 +45,20 @@ describe('Convert IP to country', () => {
       });
     }
   });
+
+  context('Edge case', () => {
+    const ips = ['0.0.0.0', '255.255.255.255'];
+    for (let ip of ips) {
+      context(`${ip}`, () => {
+        it('Should return null', () => {
+          const cc = countryByIP.getCountryCode(ip);
+          const country = countryByIP.getCountry(ip);
+          assert.equal(cc, null);
+          assert.equal(country, null);
+        });
+      });
+    }
+  });
 });
 
 describe('Convert country code to country name', function() {
