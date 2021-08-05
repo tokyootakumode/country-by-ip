@@ -14,17 +14,19 @@ const unzip = require('node-unzip-2');
 const csv = require('csv-parser');
 const definition = require('../lib/definition');
 
-const getRemoteCheckSum = () => {
+const getUpdateCheckSum = () => {
   return new Promise((resolve, reject) => {
-    https.get(definition.CSV_CHECK_SUM_URL, res => {
-      let rawData = '';
-      res
-        .on('data', chunk => {
-          rawData += chunk;
-        })
-        .on('error', err => reject(err))
-        .on('end', () => resolve(rawData));
-    });
+    let rawData = '';
+    fs.createReadStream(definition.CSV_CHECK_SUM_FILE)
+      .on('data', chunk => {
+        rawData += chunk;
+      })
+      .on('error', err => reject(err))
+      .on('end', () => {
+        const checksum =
+          rawData && rawData.split('  ') && rawData.split('  ')[0];
+        resolve(checksum);
+      });
   });
 };
 
@@ -40,30 +42,27 @@ const saveLocalCheckSum = function*(checkSum) {
   });
 };
 
-const downloadZipFile = dist => {
+const getZipFileCheckSum = dist => {
   return new Promise((resolve, reject) => {
-    https.get(definition.CSV_URL, res => {
-      const rawData = [];
-      res
-        .on('data', chunk => {
-          rawData.push(chunk);
-        })
-        .on('error', err => reject(err))
-        .on('end', () => {
-          const buffer = Buffer.concat(rawData);
-          const md5 = crypto
-            .createHash('md5')
-            .update(buffer, 'binary')
-            .digest('hex');
-
-          fs.writeFile(dist, buffer, err => {
-            if (err) {
-              return reject(err);
-            }
-            resolve(md5);
-          });
+    const rawData = [];
+    fs.createReadStream(definition.CSV_FILE)
+      .on('data', chunk => {
+        rawData.push(chunk);
+      })
+      .on('error', err => reject(err))
+      .on('end', () => {
+        const buffer = Buffer.concat(rawData);
+        const sha256 = crypto
+          .createHash('sha256')
+          .update(buffer, 'binary')
+          .digest('hex');
+        fs.writeFile(dist, buffer, err => {
+          if (err) {
+            return reject(err);
+          }
+          resolve(sha256);
         });
-    });
+      });
   });
 };
 
@@ -183,18 +182,15 @@ co(function*() {
   const ipCsvPath = path.join(dirPath, 'ip.csv');
   const locationsCsvPath = path.join(dirPath, 'locations.csv');
 
-  const remoteCheckSum = yield getRemoteCheckSum();
+  const updateCheckSum = yield getUpdateCheckSum();
   const localCheckSum = yield getLocalCheckSum();
-  if (remoteCheckSum === localCheckSum) {
+  if (updateCheckSum === localCheckSum) {
     logger.info('Data is up to date.');
     return;
   }
 
-  logger.info(`Download the zip file from ${definition.CSV_URL}`);
-  const md5CheckSum = yield downloadZipFile(zipPath);
-  logger.info('  End');
-
-  if (md5CheckSum !== remoteCheckSum) {
+  const sha256CheckSum = yield getZipFileCheckSum(zipPath);
+  if (sha256CheckSum !== updateCheckSum) {
     throw Error('Check sum is not match.');
   }
 
@@ -215,7 +211,7 @@ co(function*() {
   logger.info('  End');
 
   logger.info('Save the new checksum');
-  yield saveLocalCheckSum(remoteCheckSum);
+  yield saveLocalCheckSum(updateCheckSum);
   logger.info('  End');
 }).catch(err => {
   logger.error(err);
