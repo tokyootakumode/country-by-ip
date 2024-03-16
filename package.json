@@ -1,6 +1,6 @@
 {
   "name": "country-by-ip",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "description": "You can retrieve country name (English / Japanese) and country code by IP address.",
   "main": "lib/index.js",
   "directories": {
@@ -33,5 +33,9 @@
   "bugs": {
     "url": "https://github.com/tokyootakumode/country-by-ip/issues"
   },
-  "homepage": "https://github.com/tokyootakumode/country-by-ip#readme"
+  "homepage": "https://github.com/tokyootakumode/country-by-ip#readme",
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=7.0.0"
+  }
 }
