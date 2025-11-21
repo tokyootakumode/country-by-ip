@@ -1,6 +1,6 @@
 {
   "name": "country-by-ip",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "You can retrieve country name (English / Japanese) and country code by IP address.",
   "main": "lib/index.js",
   "directories": {
